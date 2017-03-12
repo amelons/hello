@@ -54,68 +54,78 @@
 <head>
     <title>调用照相机插件</title>
     <style type="text/css">
-    	button{
-    		margin: 10px;
-    		background-color: pink;
-    		padding: 3px;
-    		border: 0px;
-    	}
+        button{
+            margin: 10px;
+            background-color: pink;
+            padding: 3px;
+            border: 0px;
+        }
     </style>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
     var pictureSource;   // picture source
     var destinationType; // sets the format of returned value
-    // Wait for device API libraries to load    //
+    // Wait for device API libraries to load   等待phoneGap连接设备
     document.addEventListener("deviceready",onDeviceReady,false);
-        // device APIs are available    //
-        function onDeviceReady() {
-        	pictureSource=navigator.camera.PictureSourceType;
-        	destinationType=navigator.camera.DestinationType;
+        // device APIs are available    //phoneGape准备jiuxu，可以使用！
+        function onDeviceReady() {        
+            pictureSource=navigator.camera.PictureSourceType;       
+            destinationType=navigator.camera.DestinationType;    
         }
 
-        // Called when a photo is successfully retrieved    //
+        // Called when a photo is successfully retrieved    //当成功获得一张照片的Base64编码数据后被调用
         function onPhotoDataSuccess(imageData) {
-        // Uncomment to view the base64-encoded image data      //
+        // Uncomment to view the base64-encoded image data      //取消注释以查看Base64编码的图像数据
         console.log(imageData);
-        // Get image handle      //
+        // Get image handle      //获取图像句柄
         var smallImage = document.getElementById('smallImage');
-        // Unhide image elements      //
+        // Unhide image elements      //取消隐藏的图像元素
         smallImage.style.display = 'block';
-        // Show the captured photo      // The in-line CSS rules are used to resize the image      //
-        smallImage.src = "data:image/jpeg;base64," + imageData;
+        // Show the captured photo      // The in-line CSS rules are used to resize the image      
+        // 显示拍摄的照片
+        // 使用内嵌CSS规则来缩放图片
+        smallImage.src = "data:image/jpeg;base64," + imageData;   
         }
 
-        // Called when a photo is successfully retrieved    //
+        // Called when a photo is successfully retrieved    //当成功得到一张照片的URI后被调用
         function onPhotoURISuccess(imageURI) {
-        // Uncomment to view the image file URI      //
-        console.log(imageURI);
-        // Get image handle      //
+        // Uncomment to view the image file URI      
+        // Get image handle  
+        // 取消注释以查看图片文件的URI
+        // 获取图片句柄
+         console.log(imageURI);
         var largeImage = document.getElementById('largeImage');
-        // Unhide image elements      //
+        // Unhide image elements      // 取消隐藏的图像元素
         largeImage.style.display = 'block';
-        // Show the captured photo      // The in-line CSS rules are used to resize the image      //
-        largeImage.src = imageURI;
+        // Show the captured photo      // The in-line CSS rules are used to resize the image
+        // 显示拍摄的照片
+        // 使用内嵌CSS规则来缩放图片
+        largeImage.src = imageURI;   
         }
 
-        // A button will call this function    //
+        // A button will call this function    //“Capture Photo”按钮点击事件触发函数
         function capturePhoto() {
         // Take picture using device camera and retrieve image as base64-encoded string
+        //// 使用设备上的摄像头拍照，并获得Base64编码字符串格式的图像
         navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,        destinationType: destinationType.DATA_URL });
         }
 
-        // A button will call this function    //
+        // A button will call this function    //“Capture Editable Photo”按钮点击事件触发函数
         function capturePhotoEdit() {
         // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+        // 使用设备上的摄像头拍照，并获得Base64编码字符串格式的可编辑图像
         navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,        destinationType: destinationType.DATA_URL });
         }
 
-        // A button will call this function    //
+        // A button will call this function 
+        //“From Photo Library”/“From Photo Album”按钮点击事件触发函数
         function getPhoto(source) {
         // Retrieve image file location from specified source
-        navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,        destinationType: destinationType.FILE_URI,        sourceType: source });
+        // 从设定的来源处获取图像文件URI
+        navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,        destinationType: destinationType.FILE_URI,        sourceType: source }); 
         }
-
-        // Called if something bad happens.    //
+        
+        // Called if something bad happens.    //当有错误发生时触发此函数
         function onFail(message) {      alert('Failed because: ' + message);    }
     </script>
 </head>
